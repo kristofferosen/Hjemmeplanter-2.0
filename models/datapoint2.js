@@ -1,7 +1,7 @@
 var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
-var DataPointSchema   = new Schema({
+var DataPoint2Schema   = new Schema({
     area: String,
     mote: String,
     soilMoisture : String,
@@ -9,4 +9,4 @@ var DataPointSchema   = new Schema({
     time : Date
 });
 
-module.exports = mongoose.model('DataPoint', DataPointSchema);
+module.exports = mongoose.model('DataPoint2', DataPoint2Schema);

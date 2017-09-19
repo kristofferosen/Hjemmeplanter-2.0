@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 var port = process.env.PORT || 81; 
 var moment = require('moment');
-var Datapoint = require('./models/datapoint');
+var Datapoint2 = require('./models/datapoint2');
 var router = express.Router();          
 
 var iterator = 0
@@ -20,50 +20,41 @@ router.use(function(req, res, next) {
     next(); 
 });
 
-router.route('/datapoint')
+router.route('/datapoint2')
     .post(function(req, res) {
 
-        
-        var datapoint = new Datapoint();
-
-        datapoint.chipcode = req.body.chipcode;
-        datapoint.soilMoisture = req.body.soilMoisture;
-	    datapoint.soilTemperature = req.body.soilTemperature;
-        datapoint.time = Date.now();
+        var datapoint2 = new Datapoint2();
+        datapoint2.chipcode = req.body.chipcode;
+        datapoint2.soilMoisture = req.body.soilMoisture;
+	    datapoint2.soilTemperature = req.body.soilTemperature;
+        datapoint2.time = Date.now();
         iterator = iterator +1
-        //console.log(datapoint)
         console.log(iterator);
-        /*
-        datapoint.save(function(err) {
-
+        
+        datapoint2.save(function(err) {
             if (err)
                 res.send(err);
 
-            res.json({ message: 'datatapoint created!' });
-
-        });*/
-        res.json({ message: 'Mottatt!' });
+            res.json({ message: 'Mottatt!' });
+        });
 
     }).get(function(req, res) {
-
-
-    Datapoint.find(function(err, data){
-        res.json(data)
+        Datapoint2.find(function(err, data){
+            res.json(data)
     })
 });
 
 router.get('/', function(req, res) {
     console.log("try get");
-    Datapoint.find(function(err,datapoints){
+    Datapoint2.find(function(err,datapoints){
     	if(err)
 	    res.send(err)
 	res.json(datapoints) 
     });
-    //res.json({ message: 'hooray! welcome to our api!' });
 });
 
 app.use('/api', router);
 app.listen(port);
 console.log('Magic happens on port ' + port);
-//var mongoose   = require('mongoose');
-//mongoose.connect('mongodb://localhost/greenhouse2');
+var mongoose   = require('mongoose');
+mongoose.connect('mongodb://localhost/greenhouse3');
