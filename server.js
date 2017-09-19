@@ -42,6 +42,7 @@ router.route('/datapoint')
             res.json({ message: 'datatapoint created!' });
 
         });*/
+        res.json({ message: 'Mottatt!' });
 
     }).get(function(req, res) {
 
