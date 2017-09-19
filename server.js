@@ -23,6 +23,8 @@ router.use(function(req, res, next) {
 router.route('/datapoint2')
     .post(function(req, res) {
 
+        print(req)
+        print(req.body)
         var datapoint2 = new Datapoint2();
         datapoint2.area = req.body.area;
         datapoint2.mote = req.body.mote;
