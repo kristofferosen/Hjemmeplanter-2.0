@@ -24,13 +24,14 @@ router.route('/datapoint2')
     .post(function(req, res) {
 
         var datapoint2 = new Datapoint2();
-        datapoint2.chipcode = req.body.chipcode;
+        datapoint2.area = req.body.area;
+        datapoint2.mote = req.body.mote;
         datapoint2.soilMoisture = req.body.soilMoisture;
 	    datapoint2.soilTemperature = req.body.soilTemperature;
         datapoint2.time = Date.now();
-        iterator = iterator +1
+        iterator = iterator +1;
         console.log(iterator);
-        
+        console.log(datapoint2);
         datapoint2.save(function(err) {
             if (err)
                 res.send(err);
