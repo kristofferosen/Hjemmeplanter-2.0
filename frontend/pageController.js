@@ -14,7 +14,7 @@ App.controller('dashController', function ($scope, $http) {
 
         var req = {
             method: 'GET',
-            url: 'http://192.81.221.165:80/api/datapoint'
+            url: 'http://192.81.221.165:81/api/datapoint2'
         };
         $http(req).then(function(out){
 
