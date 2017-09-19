@@ -25,22 +25,105 @@ router.use(function(req, res, next) {
 router.route('/datapoint2')
     .post(function(req, res) {
 
-    
+        var datapoint2 = new Datapoint2();
+        datapoint2.area = req.body.group;
+        datapoint2.mote = req.body.mote;
+        datapoint2.soilMoisture = req.body.soilMoisture;
+        datapoint2.soilTemperature = req.body.soilTemperature;
+        datapoint2.time = Date.now();
 
-        Group.find(function(err,group){
-            if(err)
-                console.log(err)
 
-            console.log(group)
+        datapoint2.save(function(err) {
+            if (err)
+                res.send(err);
+
             
         });
 
-        var datapoint2 = new Datapoint2();
-        datapoint2.area = req.body.area;
-        datapoint2.mote = req.body.mote;
-        datapoint2.soilMoisture = req.body.soilMoisture;
-	    datapoint2.soilTemperature = req.body.soilTemperature;
-        datapoint2.time = Date.now();
+        Group.findOne({'groupNr': datapoint2.group},function(err,group){
+
+            if(err)
+                console.log(err)
+            console.log(group)
+
+
+
+
+
+            // if group does not exist
+            if(group.length == 0){
+                console.log("make new group");
+                var newGroup = Group();
+                newGroup.groupNr = datapoint2.group;
+                newGroup.motes = [];
+
+                var newMote = Mote();
+                newMote.moteNr = datapoint2.mote;
+                newMote.datapoints = [];
+                newMote.datapoints.push(datapoint2);
+
+                newMote.save(function(){
+
+                    if(err)
+                        console.log(err);
+                    else{
+                        
+                        newGroup.motes.push(newMote);
+
+                        newGroup.save(function(err) {
+                            if (err)
+                                console.log(err);
+
+                            res.json({ message: 'Mottatt!' });
+                        });
+                    }
+
+                });
+            }
+
+
+
+
+            // If group exists
+            else{
+
+                var found = false
+
+                //if mote does not exist 
+                for(mote in group.motes){
+                    if(mote.moteNr == datapoint2.mote){
+                        mote.datapoints.push(datapoint2)
+                        found = true
+                    }
+                }
+
+
+
+                //if mote does exist
+                if(!found){
+                    var newMote = Mote();
+                    newMote.moteNr = datapoint2.mote;
+                    newMote.datapoints = [];
+                    newMote.datapoints.push(datapoint2);
+
+                    newMote.save(function(){
+
+                        if(err)
+                            console.log(err);
+                        else{
+                            
+                            group.motes.push(newMote);
+                            res.json({ message: 'Mottatt!' });
+                        }
+                    });
+                }
+                else{
+                    res.json({ message: 'Mottatt!' });
+                }
+            }
+        });
+
+        
         
         //area['mote' + arg.motename].messages.push(newmessage);
         //db.save();
@@ -61,10 +144,10 @@ router.route('/datapoint2')
 
 router.get('/', function(req, res) {
     console.log("try get");
-    Datapoint2.find(function(err,datapoints){
+    Group.find(function(err,groups){
     	if(err)
 	    res.send(err)
-	res.json(datapoints) 
+	res.json(groups) 
     });
 });
 

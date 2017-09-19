@@ -2,7 +2,7 @@ var mongoose     = require('mongoose');
 var Schema       = mongoose.Schema;
 
 var DataPoint2Schema   = new Schema({
-    area: String,
+    group: String,
     mote: String,
     soilMoisture : String,
     soilTemperature : String,

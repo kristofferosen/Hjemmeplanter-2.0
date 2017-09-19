@@ -4,8 +4,7 @@ var Mote = require('./mote');
 
 var Groupschema  = new Schema({
 	motes: [Mote],
-    areaNr: String,
-    average: [Number]
+    areaNr: String
 });
 
 module.exports = mongoose.model('Group', Groupschema);
