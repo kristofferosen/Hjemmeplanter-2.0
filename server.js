@@ -25,6 +25,7 @@ router.use(function(req, res, next) {
 router.route('/datapoint2')
     .post(function(req, res) {
 
+        // Create datapoint
         var datapoint2 = new Datapoint2();
         datapoint2.group = req.body.group;
         datapoint2.mote = req.body.mote;
@@ -32,44 +33,39 @@ router.route('/datapoint2')
         datapoint2.soilTemperature = req.body.soilTemperature;
         datapoint2.time = Date.now();
 
-
+        // Save datapoint
         datapoint2.save(function(err) {
             if (err)
                 res.send(err);          
         });
 
-        console.log(datapoint2)
-
+        // Assign datapoint to correct mote in correct group
         Group.findOne({'groupNr': datapoint2.group},function(err,group){
 
             if(err)
                 console.log(err)
-            console.log(group)
-
-
-
 
 
             // if group does not exist
             if(group == null){
-                console.log("make new group");
+
+                // Make new Group
                 var newGroup = Group();
                 newGroup.groupNr = datapoint2.group;
                 newGroup.motes = [];
 
+                // Make new Mote
                 var newMote = Mote();
                 newMote.moteNr = datapoint2.mote;
                 newMote.datapoints = [];
                 newMote.datapoints.push(datapoint2);
 
+                // Save mote and group
                 newMote.save(function(){
-
                     if(err)
                         console.log(err);
                     else{
-                        
                         newGroup.motes.push(newMote);
-
                         newGroup.save(function(err) {
                             if (err)
                                 console.log(err);
@@ -77,52 +73,39 @@ router.route('/datapoint2')
                             res.json({ message: 'Mottatt!' });
                         });
                     }
-
                 });
             }
-
-
 
 
             // If group exists
             else{
 
+                // Find Mote if it exists 
                 var found = false
-
-                //if mote does not exist 
                 group.motes.forEach(function(mote){
-		   console.log(mote.moteNr + " == "+datapoint2.mote);
-		   console.log(mote); 
                    if(mote.moteNr == datapoint2.mote){
-			console.log(mote.moteNr + " == "+datapoint2.mote);
                         mote.datapoints.push(datapoint2);
                         found = true;
-			mote.save();
-			group.save();
-			console.log("found mote");
+            			mote.save();
+            			group.save();
                     }
                 });
 
-
-
-                //if mote does exist
+                // If mote does exist
                 if(!found){
-		    console.log("have to make new mote");
+                    // Create new mote
                     var newMote = Mote();
                     newMote.moteNr = datapoint2.mote;
                     newMote.datapoints = [];
                     newMote.datapoints.push(datapoint2);
 
+                    // Save mote, datapoint and group
                     newMote.save(function(){
-
                         if(err)
                             console.log(err);
                         else{
-                            console.log("made new mote");
                             group.motes.push(newMote);
-			    console.log(group);
-			    console.log(newMote);
-			    group.save();
+			                group.save();
                             res.json({ message: 'Mottatt!' });
                         }
                     });
@@ -132,20 +115,6 @@ router.route('/datapoint2')
                 }
             }
         });
-
-        
-        
-        //area['mote' + arg.motename].messages.push(newmessage);
-        //db.save();
-        /*
-        datapoint2.save(function(err) {
-            if (err)
-                res.send(err);
-
-            res.json({ message: 'Mottatt!' });
-        });
-*/
-
     }).get(function(req, res) {
         Group.find(function(err,groups){
             if(err)
@@ -155,7 +124,6 @@ router.route('/datapoint2')
 });
 
 router.get('/', function(req, res) {
-    console.log("try get");
     Group.find(function(err,groups){
     	if(err)
 	    res.send(err)

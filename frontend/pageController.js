@@ -18,11 +18,61 @@ App.controller('dashController', function ($scope, $http) {
         };
         $http(req).then(function(out){
 
-            console.log(out.data);
+            $scope.groups = out.data;
+            console.log($scope.groups);
+            
+            $scope.numberOfGroups = $scope.groups.length;
+            $scope.averages = [];
+            $scope.sumTemp = [];
+            $scope.sumMoisture = [];
+            var i1 = 0;
+            $scope.groups.forEach(function(group){
+                var s = {"sum": []};
+                $scope.sumTemp.push(a);
+                $scope.sumMoisture.push(a);
+                var i2 = 0;
+                group.motes.forEach(function(mote){
+                    mote.datapoints.forEach(function(datapoint){
+                        sumTemp[i1].sum[i2] += datapoint.soilTemperature;
+                        sumMoisture[i1].sum[i2] += datapoint.soilMoisture;
+                    });
+                });
+            });
+            console.log(sumTemp);
+            console.log(sumMoisture);
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            /*
             $scope.node8969837moist = [];
             $scope.node8969837temp = [];
-	    $scope.node8969837labels = [];	    
+	        $scope.node8969837labels = [];	    
 
             $scope.node1800741moist = [];
             $scope.node1800741temp = [];
@@ -116,7 +166,7 @@ App.controller('dashController', function ($scope, $http) {
                 $scope.node8969661moist,$scope.node8969661temp
             ];
 
-
+            */
             $scope.onClick = function (points, evt) {
                 console.log(points, evt);
             };
