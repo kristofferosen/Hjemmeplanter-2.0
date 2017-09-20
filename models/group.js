@@ -17,7 +17,7 @@ var MoteSchema   = new Schema({
 
 var Groupschema  = new Schema({
 	motes: [MoteSchema],
-    areaNr: String
+	groupNr: String
 });
 
 module.exports = mongoose.model('Group', Groupschema);

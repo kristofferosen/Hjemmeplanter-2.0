@@ -26,7 +26,7 @@ router.route('/datapoint2')
     .post(function(req, res) {
 
         var datapoint2 = new Datapoint2();
-        datapoint2.area = req.body.group;
+        datapoint2.group = req.body.group;
         datapoint2.mote = req.body.mote;
         datapoint2.soilMoisture = req.body.soilMoisture;
         datapoint2.soilTemperature = req.body.soilTemperature;
@@ -38,7 +38,7 @@ router.route('/datapoint2')
                 res.send(err);          
         });
 
-        console.log(datapoint2.group)
+        console.log(datapoint2)
 
         Group.findOne({'groupNr': datapoint2.group},function(err,group){
 
@@ -90,17 +90,24 @@ router.route('/datapoint2')
                 var found = false
 
                 //if mote does not exist 
-                for(mote in group.motes){
-                    if(mote.moteNr == datapoint2.mote){
-                        mote.datapoints.push(datapoint2)
-                        found = true
+                group.motes.forEach(function(mote){
+		   console.log(mote.moteNr + " == "+datapoint2.mote);
+		   console.log(mote); 
+                   if(mote.moteNr == datapoint2.mote){
+			console.log(mote.moteNr + " == "+datapoint2.mote);
+                        mote.datapoints.push(datapoint2);
+                        found = true;
+			mote.save();
+			group.save();
+			console.log("found mote");
                     }
-                }
+                });
 
 
 
                 //if mote does exist
                 if(!found){
+		    console.log("have to make new mote");
                     var newMote = Mote();
                     newMote.moteNr = datapoint2.mote;
                     newMote.datapoints = [];
@@ -111,8 +118,11 @@ router.route('/datapoint2')
                         if(err)
                             console.log(err);
                         else{
-                            
+                            console.log("made new mote");
                             group.motes.push(newMote);
+			    console.log(group);
+			    console.log(newMote);
+			    group.save();
                             res.json({ message: 'Mottatt!' });
                         }
                     });
