@@ -137,8 +137,11 @@ router.route('/datapoint2')
 */
 
     }).get(function(req, res) {
-        Datapoint2.find(function(err, data){
-            res.json(data)
+        Group.find(function(err,groups){
+            if(err)
+            res.send(err)
+        res.json(groups) 
+        });
     })
 });
 
