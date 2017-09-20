@@ -16,7 +16,7 @@ var MoteSchema   = new Schema({
 });
 
 var Groupschema  = new Schema({
-	motes: [Mote],
+	motes: [MoteSchema],
     areaNr: String
 });
 
