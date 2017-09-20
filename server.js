@@ -51,7 +51,7 @@ router.route('/datapoint2')
 
 
             // if group does not exist
-            if(group.length == 0){
+            if(group == null){
                 console.log("make new group");
                 var newGroup = Group();
                 newGroup.groupNr = datapoint2.group;
