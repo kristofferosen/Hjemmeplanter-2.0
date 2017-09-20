@@ -35,10 +35,10 @@ router.route('/datapoint2')
 
         datapoint2.save(function(err) {
             if (err)
-                res.send(err);
-
-            
+                res.send(err);          
         });
+
+        console.log(datapoint2.group)
 
         Group.findOne({'groupNr': datapoint2.group},function(err,group){
 
