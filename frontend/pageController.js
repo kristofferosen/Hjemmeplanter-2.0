@@ -28,18 +28,23 @@ App.controller('dashController', function ($scope, $http) {
             var i1 = 0;
             $scope.groups.forEach(function(group){
                 var s = {"sum": []};
-                $scope.sumTemp.push(a);
-                $scope.sumMoisture.push(a);
+                $scope.sumTemp.push(s);
+                $scope.sumMoisture.push(s);
                 var i2 = 0;
+	
                 group.motes.forEach(function(mote){
+		    i2 = 0;
                     mote.datapoints.forEach(function(datapoint){
-                        sumTemp[i1].sum[i2] += datapoint.soilTemperature;
-                        sumMoisture[i1].sum[i2] += datapoint.soilMoisture;
-                    });
+			
+                        $scope.sumTemp[i1].sum[i2] += parseFloat(datapoint.soilTemperature);
+                        $scope.sumMoisture[i1].sum[i2] += parseFloat(datapoint.soilMoisture);
+                    	i2++;
+		    });
                 });
+		i1++;
             });
-            console.log(sumTemp);
-            console.log(sumMoisture);
+            console.log($scope.sumTemp);
+            console.log($scope.sumMoisture);
 
 
 
