@@ -139,10 +139,9 @@ router.route('/datapoint2')
     }).get(function(req, res) {
         Group.find(function(err,groups){
             if(err)
-            res.send(err)
-        res.json(groups) 
+                res.send(err)
+            res.json(groups) 
         });
-    })
 });
 
 router.get('/', function(req, res) {
